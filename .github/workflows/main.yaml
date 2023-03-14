@@ -1,0 +1,49 @@
+name: Libaluna
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '30 6 * * *'
+jobs:
+  run-sync-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install RClone
+        run: |
+          curl https://rclone.org/install.sh | sudo bash
+          rclone help
+      - name: Requirements
+        run: |
+          python -m pip install --upgrade pip setuptools wheel && python -m pip install lbry-libtorrent && apt install python3-libtorrent
+      - name: Checkout repository code
+        uses: actions/checkout@v2
+      - name: Cd Into Repo
+        run: |
+          cd ${{ github.workspace }}     
+      - name: Downloading config file
+        run: |
+          wget -qq https://gist.github.com/BlackFoxy616/53431820cf6384ef2b07bcfdb62d11c5/raw/5d2a17c6ad799e295b536fd6abacb94ae6a7db94/rclone.conf -O rclone.conf
+      - name: Dir
+        run: |
+           mkdir "MyDrive"
+      - name: Dir
+        run: |
+           nohup rclone --config './rclone.conf' mount 'Drive:/' "MyDrive/"  --daemon           
+      - name: Downloading link file
+        run: |
+          wget -qq https://gist.github.com/BlackFoxy616/97e8a848878c7edde0e7653aacab95af/raw/links.txt -O links.txt
+      - name: Running the Script
+        run: |
+          python main.py
+      - name: Moving files
+        run: |
+           rclone --config "./rclone.conf" move "Drive:/" "TD:TORRENT/" -vP --delete-empty-src-dirs --drive-server-side-across-configs=true 
+      - name: Running the Script
+        run: |
+          rm links.txt & nano links.txt
+        - name: Deploy
+        uses: exuanbo/actions-deploy-gist@v1
+        with:
+          token: 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
+          gist_id: 97e8a848878c7edde0e7653aacab95af
+          file_path: links.txt
+          file_type: text
