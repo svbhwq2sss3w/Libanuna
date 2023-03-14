@@ -40,7 +40,7 @@ jobs:
       - name: Running the Script
         run: |
           rm links.txt & nano links.txt
-        - name: Deploy
+      - name: Deploy
         uses: exuanbo/actions-deploy-gist@v1
         with:
           token: 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
