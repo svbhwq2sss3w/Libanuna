@@ -53,7 +53,7 @@ if __name__=="__main__":
         'save_path': '/MyDrive/Torrent/',
         'storage_mode': lt.storage_mode_t(2),
     }
-   for link in read:
-    download_torrent(link)
+    for link in read:
+      download_torrent(link)
 
 print('\nALL DONE!')
