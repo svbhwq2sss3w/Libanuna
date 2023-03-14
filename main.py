@@ -50,7 +50,7 @@ def download_torrent(link):
     
 if __name__=="__main__":    
     params = {
-        'save_path': "/MyDrive/Torrent/',
+        'save_path': '/MyDrive/Torrent/',
         'storage_mode': lt.storage_mode_t(2),
     }
    for link in read:
