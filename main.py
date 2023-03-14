@@ -6,7 +6,7 @@ import datetime
 
 
 file = open("links.txt","r")
-read = csv.Reader(file)
+read = csv.reader(file)
 
 def download_torrent(link):
     ses = lt.session()
